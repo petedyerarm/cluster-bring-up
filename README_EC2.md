@@ -21,6 +21,10 @@ https://eu-north-1.console.aws.amazon.com/ec2/home?region=eu-north-1#SecurityGro
 
 ## Update instances
 
+
+NOTE: These steps are automated in the [ec2_scripts](https://github.com/petedyerarm/cluster-bring-up/tree/main/ec2_scripts) 
+
+
 ### k8s-master
 
 #### Update the node name, the packages and install docker.  
