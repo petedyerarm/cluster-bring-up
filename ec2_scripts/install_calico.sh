@@ -5,7 +5,7 @@ ver=v3.25.0
 # Parse command line
 args_list="dryrun"
 args_list="${args_list},help"
-args_list="${args_list},hostname:"
+args_list="${args_list},version:"
 args_list="${args_list},verbose"
 
 usage() {

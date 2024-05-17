@@ -1,16 +1,20 @@
 #!/bin/sh
 
+k8sver=v1.29
+
 # Parse command line
 args_list="dryrun"
 args_list="${args_list},help"
+args_list="${args_list},vesion:"
 args_list="${args_list},verbose"
 
 usage() {
     echo "Usage: $(basename "$0") [OPTIONS]"
     echo "Options:"
-    echo "  --help              Show this help message and exit"
-    echo "  --dryrun            Enable dryrun mode"
-    echo "  --verbose           Enable verbose mode"
+    echo "  --help                    Show this help message and exit"
+    echo "  --dryrun                  Enable dryrun mode"
+    echo "  --version <k8s-version>   Enable verbose mode"
+    echo "  --verbose                 Enable verbose mode"
 }
 
 drun() {
@@ -50,6 +54,9 @@ while [ $# -gt 0 ]; do
     -h | --help)
         usage
         exit 1
+        ;;
+    --version)
+        opt_prev=k8sver
         ;;
     --verbose)
         _verbose="--verbose"
@@ -91,7 +98,7 @@ sudo sed -i 's/SystemdCgroup \= false/SystemdCgroup \= true/g' /etc/containerd/c
 sudo systemctl restart containerd
 sudo systemctl enable containerd
 sudo mkdir -p /etc/apt/keyrings
-curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+curl -fsSL https://pkgs.k8s.io/core:/stable:/$k8sver/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
 sudo apt-get update
 sudo apt-get install -y kubelet kubeadm kubectl
