@@ -5,7 +5,7 @@ k8sver=v1.29
 # Parse command line
 args_list="dryrun"
 args_list="${args_list},help"
-args_list="${args_list},vesion:"
+args_list="${args_list},version:"
 args_list="${args_list},verbose"
 
 usage() {
