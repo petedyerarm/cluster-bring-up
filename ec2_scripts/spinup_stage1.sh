@@ -77,7 +77,8 @@ if [ -z "${__HOST_NAME__:-}" ]; then
 fi
 
 drun "sudo hostnamectl set-hostname $__HOST_NAME__"
-drun "sudo apt-get update  && sudo apt upgrade -y"
+drun "sudo apt-get update"
+drun "sudo apt-get upgrade -y"
 drun "sudo apt install -y docker.io"
 drun "sudo usermod -aG docker $USER"
 drun "sudo reboot"
