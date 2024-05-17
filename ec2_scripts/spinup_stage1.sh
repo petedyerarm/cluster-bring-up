@@ -19,7 +19,6 @@ drun() {
     if [ -n "${_dryrun:-}" ]; then
         echo "DRYRUN: $*"
     else
-        exit 1
         $*
     fi
 }
