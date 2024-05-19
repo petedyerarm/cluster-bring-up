@@ -22,7 +22,8 @@ https://eu-north-1.console.aws.amazon.com/ec2/home?region=eu-north-1#SecurityGro
 ## Update instances
 
 
-NOTE: These steps are automated in the [ec2_scripts](https://github.com/petedyerarm/cluster-bring-up/tree/main/ec2_scripts) 
+NOTE: These steps are automated in the [ec2_scripts](https://github.com/petedyerarm/cluster-bring-up/tree/main/ec2_scripts)  
+Run [spinup_stage1.sh](https://github.com/petedyerarm/cluster-bring-up/tree/main/ec2_scripts/spinup-stage1.sh) first, followed by [spinup_stage2.sh](https://github.com/petedyerarm/cluster-bring-up/tree/main/ec2_scripts/spinup_stage2.sh)
 
 
 ### k8s-master
@@ -74,9 +75,10 @@ sudo apt-mark hold kubelet kubeadm kubectl
 ```
 
 #### Create cluster
+This is provided in [init_cluster.sh](https://github.com/petedyerarm/cluster-bring-up/tree/main/ec2_scripts/init_cluster.sh)  
 
 ```bash
-sudo kubeadm init --pod-network-cidr=10.244.0.0/16
+sudo kubeadm init --pod-network-cidr=192.168.0.0/16
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
@@ -87,7 +89,16 @@ source <(kubectl completion bash)
 source <(kubeadm completion bash)
 ```
 
-If cluster initialisation has succeeded, then we will see a cluster join command. This command will be used by the worker nodes to join the Kubernetes cluster, so copy this command and save it for the 
+If cluster initialisation has succeeded, then we will see a cluster join command. This command will be used by the worker nodes to join the Kubernetes cluster, so copy this command and save it for joining the worker nodes later. 
+
+#### Install calico CNI
+This is provided in [install_calico.sh](https://github.com/petedyerarm/cluster-bring-up/tree/main/ec2_scripts/install_calico.sh)
+
+
+```bash
+kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/calico.yaml
+kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/tigera-operator.yaml
+```
 
 
 ### k8s-worker
