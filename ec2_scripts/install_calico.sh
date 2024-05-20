@@ -1,6 +1,6 @@
 #!/bin/sh
 
-ver=v3.25.0
+ver=v3.25.2
 
 # Parse command line
 args_list="dryrun"
@@ -74,6 +74,5 @@ if [ -n "${_verbose:-}" ]; then
 fi
 
 
-drun "kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/$ver/manifests/calico.yaml"
 drun "kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/$ver/manifests/tigera-operator.yaml"
-
+drun "kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/$ver/manifests/custom-resources.yaml"
