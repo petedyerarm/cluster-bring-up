@@ -66,8 +66,8 @@ if [ -n "${_verbose:-}" ]; then
     set -x
 fi
 
-
-drun "sudo kubeadm init --pod-network-cidr=192.168.0.0/16"
+## drun "sudo kubeadm init --pod-network-cidr=192.168.0.0/16"
+drun "sudo kubeadm init --pod-network-cidr=10.244.0.0/16"
 drun "mkdir -p $HOME/.kube"
 drun "sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config"
 drun "sudo chown $(id -u):$(id -g) $HOME/.kube/config"
