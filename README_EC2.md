@@ -91,6 +91,12 @@ source <(kubeadm completion bash)
 
 If cluster initialisation has succeeded, then we will see a cluster join command. This command will be used by the worker nodes to join the Kubernetes cluster, so copy this command and save it for joining the worker nodes later. 
 
+If you lose the join information, you can regenerate it using the following command:
+```bash
+kubeadm token create --print-join-command
+```
+
+
 #### Install calico CNI
 This is provided in [install_calico.sh](https://github.com/petedyerarm/cluster-bring-up/tree/main/ec2_scripts/install_calico.sh)
 
