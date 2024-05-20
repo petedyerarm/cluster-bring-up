@@ -1,7 +1,10 @@
 #!/bin/sh
 
+__CIDR__="10.244.0.0/16"
+
 # Parse command line
 args_list="dryrun"
+args_list="${args_list},cidr:"
 args_list="${args_list},help"
 args_list="${args_list},verbose"
 
@@ -44,6 +47,9 @@ while [ $# -gt 0 ]; do
         continue
     fi
     case $1 in
+    --cidr)
+        opt_prev=__CIDR__
+        ;;
     --dryrun)
         _dryrun=$1
         ;;
@@ -62,12 +68,13 @@ while [ $# -gt 0 ]; do
     shift 1
 done
 
+
 if [ -n "${_verbose:-}" ]; then
     set -x
 fi
 
 ## drun "sudo kubeadm init --pod-network-cidr=192.168.0.0/16"
-drun "sudo kubeadm init --pod-network-cidr=10.244.0.0/16"
+drun "sudo kubeadm init --pod-network-cidr=$__CIDR__"
 drun "mkdir -p $HOME/.kube"
 drun "sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config"
 drun "sudo chown $(id -u):$(id -g) $HOME/.kube/config"
