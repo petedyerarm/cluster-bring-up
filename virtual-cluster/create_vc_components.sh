@@ -1,27 +1,16 @@
 #!/bin/sh
 
-__CIDR__="192.168.0.0/16"
-
 # Parse command line
-args_list="dryrun"
-args_list="${args_list},cidr:"
-args_list="${args_list},help"
+args_list="help"
+args_list="${args_list},build-images"
 args_list="${args_list},verbose"
 
 usage() {
     echo "Usage: $(basename "$0") [OPTIONS]"
     echo "Options:"
     echo "  --help              Show this help message and exit"
-    echo "  --dryrun            Enable dryrun mode"
+    echo "  --build-images      Optionally build the virtual cluster docker images."
     echo "  --verbose           Enable verbose mode"
-}
-
-drun() {
-    if [ -n "${_dryrun:-}" ]; then
-        echo "DRYRUN: $*"
-    else
-        $*
-    fi
 }
 
 args=$(getopt -o+ho:x -l $args_list -n "$(basename "$0")" -- "$@")
@@ -47,15 +36,12 @@ while [ $# -gt 0 ]; do
         continue
     fi
     case $1 in
-    --cidr)
-        opt_prev=__CIDR__
-        ;;
-    --dryrun)
-        _dryrun=$1
-        ;;
     -h | --help)
         usage
         exit 1
+        ;;
+    --build-images)
+        _build_images="--build-images"
         ;;
     --verbose)
         _verbose="--verbose"
@@ -68,18 +54,29 @@ while [ $# -gt 0 ]; do
     shift 1
 done
 
-
 if [ -n "${_verbose:-}" ]; then
     set -x
 fi
 
-drun "sudo kubeadm init --pod-network-cidr=$__CIDR__ --kubernetes-version 1.29.3 --node-name k8s-control"
 
-drun "mkdir -p $HOME/.kube"
-drun "sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config"
-drun "sudo chown $(id -u):$(id -g) $HOME/.kube/config"
+sudo apt install -y make golang awscli
 
-drun 'echo "source <(kubectl completion bash)" >> ~/.bashrc'
-drun "echo 'To get kubectl completion in you current shell execute the command'\n"
-drun "echo '. <(kubectl completion bash)'"
+cd $HOME
+mkdir capn-virtualcluster
+cd capn-virtualcluster
+git clone https://github.com/kubernetes-sigs/cluster-api-provider-nested.git
+cd cluster-api-provider-nested/virtualcluster
+make build WHAT=cmd/kubectl-vc
+sudo cp -f _output/bin/kubectl-vc /usr/local/bin
+cd $HOME
+
+if [ -n "${_build_images:-}" ]; then
+    cd $HOME/capn-virtualcluster/cluster-api-provider-nested/virtualcluster
+    make build-images
+    cd $HOME
+
+
+    docker image ls
+fi
+
 

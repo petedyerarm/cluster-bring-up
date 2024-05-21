@@ -1,17 +1,16 @@
 #!/bin/sh
 
-__CIDR__="192.168.0.0/16"
-
 # Parse command line
 args_list="dryrun"
-args_list="${args_list},cidr:"
 args_list="${args_list},help"
+args_list="${args_list},version:"
 args_list="${args_list},verbose"
 
 usage() {
     echo "Usage: $(basename "$0") [OPTIONS]"
     echo "Options:"
     echo "  --help              Show this help message and exit"
+    echo "  --version  <ver>    Specify the calico version"
     echo "  --dryrun            Enable dryrun mode"
     echo "  --verbose           Enable verbose mode"
 }
@@ -47,15 +46,15 @@ while [ $# -gt 0 ]; do
         continue
     fi
     case $1 in
-    --cidr)
-        opt_prev=__CIDR__
-        ;;
     --dryrun)
         _dryrun=$1
         ;;
     -h | --help)
         usage
         exit 1
+        ;;
+    --version)
+        opt_prev=ver
         ;;
     --verbose)
         _verbose="--verbose"
@@ -68,18 +67,11 @@ while [ $# -gt 0 ]; do
     shift 1
 done
 
-
 if [ -n "${_verbose:-}" ]; then
     set -x
 fi
 
-drun "sudo kubeadm init --pod-network-cidr=$__CIDR__ --kubernetes-version 1.29.3 --node-name k8s-control"
 
-drun "mkdir -p $HOME/.kube"
-drun "sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config"
-drun "sudo chown $(id -u):$(id -g) $HOME/.kube/config"
-
-drun 'echo "source <(kubectl completion bash)" >> ~/.bashrc'
-drun "echo 'To get kubectl completion in you current shell execute the command'\n"
-drun "echo '. <(kubectl completion bash)'"
+drun "kubectl edit ippool default-ipv4-ippool"
+drun "kubectl edit installation default"
 

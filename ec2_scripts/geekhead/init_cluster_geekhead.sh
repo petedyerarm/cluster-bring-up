@@ -1,6 +1,6 @@
 #!/bin/sh
 
-__CIDR__="192.168.0.0/16"
+__CIDR__="10.10.0.0/16"
 
 # Parse command line
 args_list="dryrun"
@@ -73,13 +73,14 @@ if [ -n "${_verbose:-}" ]; then
     set -x
 fi
 
-drun "sudo kubeadm init --pod-network-cidr=$__CIDR__ --kubernetes-version 1.29.3 --node-name k8s-control"
+## drun "sudo kubeadm init --pod-network-cidr=192.168.0.0/16"
+drun "sudo kubeadm init --pod-network-cidr=$__CIDR__ --kubernetes-version 1.29.1 --node-name k8s-master"
 
 drun "mkdir -p $HOME/.kube"
 drun "sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config"
 drun "sudo chown $(id -u):$(id -g) $HOME/.kube/config"
 
-drun 'echo "source <(kubectl completion bash)" >> ~/.bashrc'
-drun "echo 'To get kubectl completion in you current shell execute the command'\n"
-drun "echo '. <(kubectl completion bash)'"
-
+echo "source <(kubectl completion bash)" >> ~/.bashrc
+echo "source <(kubeadm completion bash)" >> ~/.bashrc
+. <(kubectl completion bash)
+. <(kubeadm completion bash)
