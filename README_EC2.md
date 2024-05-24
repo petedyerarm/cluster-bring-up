@@ -16,8 +16,6 @@ Enable the ports provided in
 K8S_MASTER:  
 https://eu-north-1.console.aws.amazon.com/ec2/home?region=eu-north-1#SecurityGroup:groupId=sg-0be0d730391c35a63
 
-K8S_WORKER:  
-https://eu-north-1.console.aws.amazon.com/ec2/home?region=eu-north-1#SecurityGroup:groupId=sg-0df7d8137dbcbf7c9
 
 ## Update instances
 
