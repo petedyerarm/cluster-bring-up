@@ -3,7 +3,9 @@
 
 ## 1. Build and install `kubectl-vc`
 
-VirtualCluster offers a handy `kubectl` plugin, we can build and use it by following this process.
+VirtualCluster offers a handy `kubectl` plugin, we can build and use it by following this process, which is also in [create_vc_components.sh](https://github.com/petedyerarm/cluster-bring-up/tree/main/virtual-cluster/create_vc_components.sh)
+
+
 ```bash
 sudo apt install -y make golang awscli
 
