@@ -1,12 +1,16 @@
 #!/bin/sh
 
 __CIDR__="192.168.0.0/16"
+k8sver=v1.29
+k8ssubver=3
 
 # Parse command line
 args_list="dryrun"
 args_list="${args_list},cidr:"
 args_list="${args_list},help"
 args_list="${args_list},verbose"
+args_list="${args_list},version:"
+args_list="${args_list},subver:"
 
 usage() {
     echo "Usage: $(basename "$0") [OPTIONS]"
@@ -60,6 +64,12 @@ while [ $# -gt 0 ]; do
     --verbose)
         _verbose="--verbose"
         ;;
+    --version)
+        opt_prev=k8sver
+        ;;
+    --subver)
+        opt_prev=k8ssubver
+        ;;
     --)
         shift
         break 2
@@ -73,7 +83,7 @@ if [ -n "${_verbose:-}" ]; then
     set -x
 fi
 
-drun "sudo kubeadm init --pod-network-cidr=$__CIDR__ --kubernetes-version 1.29.3 --node-name k8s-control"
+drun "sudo kubeadm init --pod-network-cidr=$__CIDR__ --kubernetes-version $k8sver.$k8ssubver --node-name k8s-control"
 
 drun "mkdir -p $HOME/.kube"
 drun "sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config"

@@ -64,7 +64,7 @@ sudo apt install -y make golang awscli
 cd $HOME
 mkdir capn-virtualcluster
 cd capn-virtualcluster
-git clone https://github.com/kubernetes-sigs/cluster-api-provider-nested.git
+git clone https://github.com/IzumaNetworks/cluster-api-provider-nested.git -b modernize
 cd cluster-api-provider-nested/virtualcluster
 make build WHAT=cmd/kubectl-vc
 sudo cp -f _output/bin/kubectl-vc /usr/local/bin
