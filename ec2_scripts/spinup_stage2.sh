@@ -1,6 +1,6 @@
 #!/bin/sh
 
-k8sver=v1.29
+k8sver=1.29
 k8ssubver=3
 
 # Parse command line
@@ -120,8 +120,8 @@ sudo apt update
 sudo apt install -y apt-transport-https ca-certificates curl gpg
 
 sudo mkdir -p -m 755 /etc/apt/keyrings
-curl -fsSL https://pkgs.k8s.io/core:/stable:/$k8sver/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/$k8sver/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v$k8sver/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v$k8sver/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
 sudo apt-get update
 sudo apt-get install -y kubelet=$k8sver.$k8ssubver-1.1 kubeadm=$k8sver.$k8ssubver-1.1 kubectl=$k8sver.$k8ssubver-1.1
 sudo apt-mark hold kubelet kubeadm kubectl
