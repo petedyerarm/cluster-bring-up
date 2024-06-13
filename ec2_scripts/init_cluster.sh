@@ -1,7 +1,7 @@
 #!/bin/sh
 
 __CIDR__="192.168.0.0/16"
-k8sver=v1.29
+k8sver=1.29
 k8ssubver=3
 
 # Parse command line
