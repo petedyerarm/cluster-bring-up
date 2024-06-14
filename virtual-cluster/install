@@ -1,0 +1,19 @@
+
+#!/bin/sh
+
+cd $HOME/capn-virtualcluster/cluster-api-provider-nested/virtualcluster
+
+
+kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-nested/main/virtualcluster/config/crd/tenancy.x-k8s.io_clusterversions.yaml
+
+kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-nested/main/virtualcluster/config/crd/tenancy.x-k8s.io_virtualclusters.yaml
+
+kubectl apply -f all_in_one-izuma.yaml
+
+## Pause here.....
+#
+#
+kubectl apply -f clusterversion_v1_nodeport.yaml
+
+
+kubectl vc create -f https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-nested/main/virtualcluster/config/sampleswithspec/virtualcluster_1_nodeport.yaml -o vc-1.kubeconfig
