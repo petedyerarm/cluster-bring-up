@@ -59,7 +59,7 @@ if [ -n "${_verbose:-}" ]; then
 fi
 
 
-sudo apt install -y make golang awscli
+sudo apt install -y make golang
 
 cd $HOME
 mkdir capn-virtualcluster
