@@ -59,7 +59,7 @@ if [ -n "${_verbose:-}" ]; then
 fi
 
 
-sudo apt install -y make golang
+sudo apt install -y make golang git
 
 cd $HOME
 mkdir capn-virtualcluster
